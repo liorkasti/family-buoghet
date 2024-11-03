@@ -1,18 +1,25 @@
 // src/pages/LoginPage.tsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 // import './LoginPage.css';
 import '../styles/LoginPage.css';
+import DashboardPage from './DashboardPage';
 
 const LoginPage: React.FC = () => {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [role, setRole] = useState<string>('child'); // ברירת מחדל כ"ילד"
     const [error, setError] = useState<string>('');
+    const navigate = useNavigate();
 
     const handleLogin = () => {
+        
         if (username === 'test' && password === '1234') {
-            console.log('התחברות הצליחה');
-            // העברת המשתמש לדף הבית או שמירת מצב התחברות
+            alert('התחברות הצליחה');
+            //  המשתמש לדף הבית או שמירת מצב התחברות
+            console.log({navigate});
+            navigate('DashboardPage')
+            
         } else {
             setError('שם משתמש או סיסמה אינם נכונים');
         }

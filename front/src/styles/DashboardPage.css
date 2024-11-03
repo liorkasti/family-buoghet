@@ -1,0 +1,48 @@
+/* src/styles/DashboardPage.css */
+.dashboard-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    text-align: right;
+    direction: rtl;
+}
+
+h1,
+h2,
+h3 {
+    color: #333333;
+}
+
+.budget-balance {
+    background-color: #e0f7fa;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.recent-expenses,
+.budget-graphs,
+.alerts,
+.upcoming-expenses {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+.alerts {
+    color: #ff5252;
+    font-weight: bold;
+}
