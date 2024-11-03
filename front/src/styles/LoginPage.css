@@ -3,7 +3,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
+    background-color: #e9eff7;
+    /* רקע בהיר */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,100 +12,92 @@ body {
 }
 
 .login-container {
-    width: 100%;
     max-width: 400px;
+    width: 100%;
     padding: 40px;
     background-color: #ffffff;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    /* צבע רקע לתיבה */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    /* צל */
+    border-radius: 10px;
+    /* קצוות מעוגלים */
     text-align: center;
     direction: rtl;
+    /* כיוון טקסט מימין לשמאל */
 }
 
-
-h1 {
+h2 {
     font-size: 1.8em;
     color: #333333;
+    /* צבע הכותרת */
     margin-bottom: 20px;
 }
 
-label {
-    display: block;
-    font-size: 0.9em;
-    color: #333333;
-    margin-bottom: 5px;
-    text-align: right;
-}
-
-input,
+input[type="text"],
+input[type="password"],
 select {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 5px;
     box-sizing: border-box;
     font-size: 1em;
     transition: border-color 0.3s;
 }
 
-input:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
 select:focus {
-    border-color: #4CAF50;
+    border-color: #3b5998;
+    /* צבע גבול בעת פוקוס */
     outline: none;
 }
 
 button {
     width: 100%;
-    padding: 12px;
-    background-color: #4CAF50;
+    padding: 14px;
+    background-color: #3b5998;
+    /* צבע הכפתור */
     color: white;
     font-size: 1em;
     font-weight: bold;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #45A049;
+    background-color: #2d4373;
 }
 
-.error {
+p.error {
     color: #ff4d4f;
+    /* צבע הודעת שגיאה */
     font-size: 0.9em;
     margin-top: -10px;
     margin-bottom: 10px;
-    text-align: right;
+    text-align: center;
 }
 
 a {
-    color: #007BFF;
+    color: #3b5998;
+    /* צבע קישור */
     text-decoration: none;
     font-size: 0.9em;
     transition: color 0.3s;
 }
 
 a:hover {
-    color: #0056b3;
+    color: #2d4373;
 }
 
-form p {
-    text-align: right;
-}
-
-/* src/styles/LoginPage.css */
-.login-container {
-    max-width: 400px;
-    margin: auto;
-    padding: 20px;
+.role-select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    text-align: center;
-}
-
-.error {
-    color: red;
-    margin-top: 10px;
+    font-size: 1em;
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import '../styles/LoginPage.css';
 
 const LoginPage: React.FC = () => {
     const [username, setUsername] = useState('');
@@ -11,20 +12,23 @@ const LoginPage: React.FC = () => {
     const handleLogin = async () => {
         try {
             const response = await axios.post('/api/users/login', { username, password });
-            if (response.data.redirectToSignup) {
-                navigate('/signup'); // מעביר לדף ההרשמה אם אין משתמש קיים
+            setMessage(response.data.message || 'התחברות הצליחה!');
+        } catch (error: any) {
+            if (error.response && error.response.status === 404) {
+                setMessage('המשתמש לא קיים. אנא הרשמו.');
             } else {
-                setMessage(response.data.message);
-                // כאן אפשר לשמור את המידע על ההתחברות, אם צריך
+                setMessage('התחברות נכשלה. שם משתמש או סיסמה שגויים.');
             }
-        } catch (error) {
-            setMessage('התחברות נכשלה. שם משתמש או סיסמה שגויים.');
         }
     };
 
+    const goToSignup = () => {
+        navigate('/signup');
+    };
+
     return (
-        <div>
-            <h2>התחברות</h2>
+        <div className="login-container">
+            <h1>התחברות</h1>
             <input
                 type="text"
                 placeholder="שם משתמש"
@@ -38,7 +42,8 @@ const LoginPage: React.FC = () => {
                 onChange={(e) => setPassword(e.target.value)}
             />
             <button onClick={handleLogin}>התחבר</button>
-            <p>{message}</p>
+            <button onClick={goToSignup}>הרשמה</button>
+            <p className="error">{message}</p>
         </div>
     );
 };

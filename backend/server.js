@@ -6,9 +6,8 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5000; // שימוש בפורט מ-.env אם קיים, אחרת 5000
+const PORT = process.env.PORT || 5000;
 
-// חיבור למסד הנתונים
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/yourDatabaseName', {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -16,7 +15,6 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/yourDatabas
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Failed to connect to MongoDB:', err));
 
-// הגדרת סכימת משתמש
 const UserSchema = new mongoose.Schema({
   username: { type: String, unique: true, required: true },
   password: { type: String, required: true },
@@ -25,11 +23,9 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', UserSchema);
 
-// שימוש ב-middleware של cors ו-json
 app.use(cors());
 app.use(express.json());
 
-// מסלול התחברות
 app.post('/api/users/login', async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -44,18 +40,15 @@ app.post('/api/users/login', async (req, res) => {
   }
 });
 
-// מסלול לרישום משתמשים חדשים
 app.post('/api/users/signup', async (req, res) => {
   const { username, password, role } = req.body;
 
   try {
-    // בדיקה אם שם המשתמש כבר קיים
     const existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(400).json({ message: 'שם המשתמש כבר קיים במערכת' });
     }
 
-    // יצירת משתמש חדש
     const newUser = new User({ username, password, role });
     await newUser.save();
     res.status(201).json({ message: 'משתמש נרשם בהצלחה', user: newUser });
@@ -64,7 +57,6 @@ app.post('/api/users/signup', async (req, res) => {
   }
 });
 
-// הפעלת השרת
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

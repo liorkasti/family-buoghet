@@ -9,14 +9,14 @@ const SignupPage: React.FC = () => {
 
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
-
         try {
-            const response = await axios.post('/api/users/signup', {
-                username,
-                password,
-                role,
-            });
-            setMessage(response.data.message);
+            const response = await axios.post('/api/users/signup', { username, password, role });
+
+            if (response.data.exists) {
+                setMessage('המשתמש קיים כבר. בבקשה הזן שם משתמש אחר.');
+            } else {
+                setMessage('ההרשמה הצליחה!');
+            }
         } catch (error) {
             setMessage('שגיאה בהרשמה, נסה שוב.');
         }
@@ -26,8 +26,7 @@ const SignupPage: React.FC = () => {
         <div>
             <h2>דף הרשמה</h2>
             <form onSubmit={handleSignup}>
-                <label>
-                    שם משתמש:
+                <label>שם משתמש:
                     <input
                         type="text"
                         value={username}
@@ -35,8 +34,7 @@ const SignupPage: React.FC = () => {
                     />
                 </label>
                 <br />
-                <label>
-                    סיסמה:
+                <label>סיסמה:
                     <input
                         type="password"
                         value={password}
@@ -44,13 +42,12 @@ const SignupPage: React.FC = () => {
                     />
                 </label>
                 <br />
-                <label>
-                    תפקיד:
-                    <input
-                        type="text"
-                        value={role}
-                        onChange={(e) => setRole(e.target.value)}
-                    />
+                <label>תפקיד:
+                    <select value={role} onChange={(e) => setRole(e.target.value)}>
+                        <option value="">בחר תפקיד</option>
+                        <option value="parent">הורה</option>
+                        <option value="child">ילד</option>
+                    </select>
                 </label>
                 <br />
                 <button type="submit">הירשם</button>
@@ -61,6 +58,3 @@ const SignupPage: React.FC = () => {
 };
 
 export default SignupPage;
-
-// הוספת export {} כדי לוודא שהקובץ נחשב מודול
-export { };
