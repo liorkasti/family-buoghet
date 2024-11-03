@@ -1,48 +1,29 @@
 /* src/styles/DashboardPage.css */
 .dashboard-container {
     padding: 20px;
-    font-family: Arial, sans-serif;
-    text-align: right;
+    max-width: 800px;
+    margin: 0 auto;
     direction: rtl;
 }
 
-h1,
-h2,
-h3 {
-    color: #333333;
-}
-
-.budget-balance {
-    background-color: #e0f7fa;
+.budget-balance, .recent-expenses, .budget-graphs, .alerts, .upcoming-expenses {
+    background-color: #f7f9fc;
     padding: 20px;
     border-radius: 8px;
-    text-align: center;
     margin-bottom: 20px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
-.recent-expenses,
-.budget-graphs,
-.alerts,
-.upcoming-expenses {
-    margin-bottom: 20px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #ffffff;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+h1, h2, h3 {
+    color: #333;
 }
 
 ul {
-    list-style: none;
+    list-style-type: none;
     padding: 0;
 }
 
 li {
-    margin-bottom: 10px;
-}
-
-.alerts {
-    color: #ff5252;
-    font-weight: bold;
+    font-size: 1em;
+    padding: 5px 0;
 }

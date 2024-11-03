@@ -1,17 +1,19 @@
 // src/App.tsx
+
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import DashboardPage from './pages/DashboardPage';
 import LoginPage from './pages/LoginPage';
-import './App.css'; // Import the CSS file
+import DashboardPage from './pages/DashboardPage';
+import SignupPage from './pages/SignupPage';
 
 const App: React.FC = () => {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<LoginPage />} />
-                <Route path="/LoginPage" element={<LoginPage />} />
-                <Route path="/DashboardPage" element={<DashboardPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/signup" element={<SignupPage />} />
             </Routes>
         </BrowserRouter>
     );

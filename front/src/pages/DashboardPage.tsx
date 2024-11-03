@@ -1,5 +1,6 @@
 // src/pages/DashboardPage.tsx
 import React, { useState } from 'react';
+import '../styles/DashboardPage.css';
 
 const DashboardPage: React.FC = () => {
     const [budgetBalance, setBudgetBalance] = useState<number>(5000); // יתרת תקציב לדוגמה
@@ -18,45 +19,40 @@ const DashboardPage: React.FC = () => {
         <div className="dashboard-container">
             <h1>דאשבורד ניהול תקציב</h1>
 
-            {/* תצוגת יתרת תקציב */}
             <div className="budget-balance">
                 <h2>יתרת תקציב נוכחית</h2>
-                <p>{budgetBalance} ש"ח</p>
+                <p>{budgetBalance.toLocaleString()} ש"ח</p>
             </div>
 
-            {/* כרטיס הוצאות אחרונות */}
             <div className="recent-expenses">
                 <h3>הוצאות אחרונות</h3>
                 <ul>
                     {recentExpenses.map(expense => (
                         <li key={expense.id}>
-                            {expense.description} - {expense.date} - {expense.amount} ש"ח
+                            {expense.description} - {expense.date} - {expense.amount.toLocaleString()} ש"ח
                         </li>
                     ))}
                 </ul>
             </div>
 
-            {/* גרף תקציב חודשי (כאן יתווספו גרפים בעתיד) */}
             <div className="budget-graphs">
                 <h3>התפלגות התקציב לפי קטגוריות</h3>
-                <p>גרף עוגה - בעתיד ניתן להוסיף ספריית גרפים להמחשה</p>
+                <p>גרף עוגה יתווסף כאן בעתיד</p>
                 <h3>מגמת הוצאות לאורך החודש</h3>
-                <p>גרף ציר זמן - בעתיד ניתן להוסיף ספריית גרפים להמחשה</p>
+                <p>גרף ציר זמן יתווסף כאן בעתיד</p>
             </div>
 
-            {/* התראות */}
             <div className="alerts">
                 <h3>התראות תקציב</h3>
-                <p>התקציב קרוב לסיום!</p>
+                <p>⚠️ התקציב קרוב לסיום!</p>
             </div>
 
-            {/* הוצאות קבועות קרובות */}
             <div className="upcoming-expenses">
                 <h3>הוצאות קבועות קרובות</h3>
                 <ul>
                     {upcomingExpenses.map(expense => (
                         <li key={expense.id}>
-                            {expense.description} - תאריך יעד: {expense.dueDate} - {expense.amount} ש"ח
+                            {expense.description} - תאריך יעד: {expense.dueDate} - {expense.amount.toLocaleString()} ש"ח
                         </li>
                     ))}
                 </ul>

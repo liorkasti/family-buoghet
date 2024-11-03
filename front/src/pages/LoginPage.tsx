@@ -1,63 +1,44 @@
-// src/pages/LoginPage.tsx
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-// import './LoginPage.css';
-import '../styles/LoginPage.css';
-import DashboardPage from './DashboardPage';
 
 const LoginPage: React.FC = () => {
-    const [username, setUsername] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [role, setRole] = useState<string>('child'); // ברירת מחדל כ"ילד"
-    const [error, setError] = useState<string>('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
-    const handleLogin = () => {
-        
-        if (username === 'test' && password === '1234') {
-            alert('התחברות הצליחה');
-            //  המשתמש לדף הבית או שמירת מצב התחברות
-            console.log({navigate});
-            navigate('DashboardPage')
-            
-        } else {
-            setError('שם משתמש או סיסמה אינם נכונים');
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post('/api/users/login', { username, password });
+            if (response.data.redirectToSignup) {
+                navigate('/signup'); // מעביר לדף ההרשמה אם אין משתמש קיים
+            } else {
+                setMessage(response.data.message);
+                // כאן אפשר לשמור את המידע על ההתחברות, אם צריך
+            }
+        } catch (error) {
+            setMessage('התחברות נכשלה. שם משתמש או סיסמה שגויים.');
         }
     };
 
     return (
-        <div className="login-container">
-            <h1>כניסה למערכת ניהול תקציב</h1>
-            <form>
-                <label>
-                    שם משתמש:
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </label>
-                <label>
-                    סיסמה:
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </label>
-                <label>
-                    זיהוי תפקיד:
-                    <select value={role} onChange={(e) => setRole(e.target.value)}>
-                        <option value="parent">הורה</option>
-                        <option value="child">ילד</option>
-                    </select>
-                </label>
-                <button type="button" onClick={handleLogin}>כניסה</button>
-                {error && <p className="error">{error}</p>}
-                <p>
-                    <a href="/forgot-password">שכחת סיסמה?</a>
-                </p>
-            </form>
+        <div>
+            <h2>התחברות</h2>
+            <input
+                type="text"
+                placeholder="שם משתמש"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+                type="password"
+                placeholder="סיסמה"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <button onClick={handleLogin}>התחבר</button>
+            <p>{message}</p>
         </div>
     );
 };
