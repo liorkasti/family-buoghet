@@ -1,0 +1,65 @@
+.add-expense-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px; /* הגדלת הריפוד להרגשה נוחה יותר */
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f8; /* צבע רקע בהיר */
+    color: #333; /* צבע טקסט כהה */
+    border-radius: 12px; /* פינות מעוגלות */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* צל יותר בולט */
+    max-width: 400px; /* הגבלת רוחב המרכיב */
+    margin: auto; /* מרכז את התוכן */
+}
+
+h1 {
+    color: #1976d2; /* צבע כותרת */
+    margin-bottom: 20px; /* רווח מתחת לכותרת */
+    font-size: 24px; /* גודל כותרת גדול יותר */
+    text-align: center; /* יישור מרכזי */
+}
+
+label {
+    font-size: 18px; /* גודל טקסט של תוויות */
+    margin: 10px 0; /* רווחים סביב תוויות */
+    text-align: left; /* יישור לשמאל */
+    width: 100%; /* יישור רוחב מלא */
+}
+
+input[type="number"], select, textarea {
+    width: 100%; /* רוחב מלא */
+    padding: 12px; /* ריפוד פנימי יותר */
+    margin-top: 5px; /* רווח מעל שדות */
+    border: 1px solid #ccc; /* גבול בהיר */
+    border-radius: 6px; /* פינות מעוגלות */
+    font-size: 16px; /* גודל טקסט */
+    transition: border 0.3s; /* מעבר חלק על גבול */
+}
+
+input[type="number"]:focus, select:focus, textarea:focus {
+    border: 1px solid #1976d2; /* גבול כחול בהקשה */
+    outline: none; /* הסרת גבול כחול של הדפדפן */
+}
+
+button {
+    margin-top: 20px; /* רווח מעל הכפתור */
+    padding: 12px 24px; /* ריפוד פנימי לכפתור */
+    font-size: 18px; /* גודל טקסט גדול יותר */
+    background-color: #1976d2; /* צבע רקע לכפתור */
+    color: white; /* צבע טקסט של הכפתור */
+    border: none; /* ללא גבול */
+    border-radius: 6px; /* פינות מעוגלות */
+    cursor: pointer; /* סמן עכבר כמו לחצן */
+    transition: background-color 0.3s; /* מעבר צבע חלק */
+}
+
+button:hover {
+    background-color: #1565c0; /* צבע כהה יותר בהקשה */
+}
+
+p {
+    color: green; /* צבע טקסט להודעות הצלחה */
+    margin-top: 10px; /* רווח מעל ההודעה */
+    text-align: center; /* יישור מרכזי */
+    font-size: 16px; /* גודל טקסט */
+}

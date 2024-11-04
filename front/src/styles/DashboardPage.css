@@ -1,29 +1,110 @@
-/* src/styles/DashboardPage.css */
 .dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-    direction: rtl;
-}
-
-.budget-balance, .recent-expenses, .budget-graphs, .alerts, .upcoming-expenses {
-    background-color: #f7f9fc;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-h1, h2, h3 {
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f8;
     color: #333;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
-li {
-    font-size: 1em;
-    padding: 5px 0;
+h1 {
+    font-size: 28px;
+    color: #1976d2;
+}
+
+.budget-section, .recent-expenses-section, .charts-section, .alerts-section, .upcoming-expenses-section {
+    width: 100%;
+    max-width: 800px;
+    background-color: #ffffff;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.budget-section {
+    background-color: #e3f2fd;
+}
+
+.budget-balance {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1e88e5;
+    margin-top: 10px;
+}
+
+.recent-expenses-section {
+    background-color: #f9fbe7;
+}
+
+.expense-list, .upcoming-expenses-list {
+    list-style-type: none;
+    padding: 0;
+    font-size: 18px;
+    color: #555;
+}
+
+.expense-list li, .upcoming-expenses-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.charts-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.pie-chart, .line-chart {
+    width: 45%;
+    background-color: #fff8e1;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.alerts-section {
+    color: #d32f2f;
+    font-weight: bold;
+    background-color: #ffebee;
+}
+
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.upcoming-expenses-section {
+    background-color: #e8f5e9;
+}
+
+.add-expense-floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #1976d2;
+    color: #ffffff;
+    font-size: 30px;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-expense-floating-button:hover {
+    background-color: #1565c0;
+    transform: scale(1.1);
 }

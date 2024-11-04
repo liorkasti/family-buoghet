@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const SignupPage: React.FC = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/users/signup', { username, password, role });
+            const response = await axios.post('http://localhost:5004/api/users/signup', { username, password, role });
 
             if (response.data.exists) {
                 setMessage('המשתמש קיים כבר. בבקשה הזן שם משתמש אחר.');
             } else {
                 setMessage('ההרשמה הצליחה!');
+                
+                // ניווט לדף הדשבורד לאחר הרשמה מוצלחת
+                navigate('/dashboard');
             }
         } catch (error) {
             setMessage('שגיאה בהרשמה, נסה שוב.');

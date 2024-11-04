@@ -1,62 +1,62 @@
-// src/pages/DashboardPage.tsx
-import React, { useState } from 'react';
-import '../styles/DashboardPage.css';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../styles/DashboardPage.css'; // נוודא שיש תיקיה עם סגנונות
 
 const DashboardPage: React.FC = () => {
-    const [budgetBalance, setBudgetBalance] = useState<number>(5000); // יתרת תקציב לדוגמה
-    const recentExpenses = [
-        { id: 1, description: "מכולת", date: "2024-10-01", amount: 200 },
-        { id: 2, description: "דלק", date: "2024-10-02", amount: 150 },
-        { id: 3, description: "ביגוד", date: "2024-10-03", amount: 300 },
-    ];
+    const navigate = useNavigate();
 
-    const upcomingExpenses = [
-        { id: 1, description: "שכר דירה", dueDate: "2024-10-05", amount: 2500 },
-        { id: 2, description: "חשמל", dueDate: "2024-10-10", amount: 400 },
-    ];
+    const goToAddExpense = () => {
+        navigate('/add-expense'); // ניווט לדף הוספת הוצאה
+    };
 
     return (
         <div className="dashboard-container">
-            <h1>דאשבורד ניהול תקציב</h1>
+            <header className="header">
+                <h1>דשבורד תקציב משפחתי</h1>
+            </header>
 
-            <div className="budget-balance">
+            <section className="budget-section">
                 <h2>יתרת תקציב נוכחית</h2>
-                <p>{budgetBalance.toLocaleString()} ש"ח</p>
-            </div>
+                <div className="budget-balance">₪5,000</div>
+            </section>
 
-            <div className="recent-expenses">
-                <h3>הוצאות אחרונות</h3>
-                <ul>
-                    {recentExpenses.map(expense => (
-                        <li key={expense.id}>
-                            {expense.description} - {expense.date} - {expense.amount.toLocaleString()} ש"ח
-                        </li>
-                    ))}
+            <section className="recent-expenses-section">
+                <h2>הוצאות אחרונות</h2>
+                <ul className="expense-list">
+                    <li>מזון - ₪100 - 01/11/2024</li>
+                    <li>תחבורה - ₪50 - 02/11/2024</li>
+                    <li>בילויים - ₪200 - 03/11/2024</li>
                 </ul>
-            </div>
+            </section>
 
-            <div className="budget-graphs">
-                <h3>התפלגות התקציב לפי קטגוריות</h3>
-                <p>גרף עוגה יתווסף כאן בעתיד</p>
-                <h3>מגמת הוצאות לאורך החודש</h3>
-                <p>גרף ציר זמן יתווסף כאן בעתיד</p>
-            </div>
+            <section className="charts-section">
+                <div className="pie-chart">
+                    <h2>התפלגות תקציב לפי קטגוריות</h2>
+                    {/* גרף עוגה */}
+                </div>
+                <div className="line-chart">
+                    <h2>מגמת הוצאות חודשית</h2>
+                    {/* גרף ציר זמן */}
+                </div>
+            </section>
 
-            <div className="alerts">
-                <h3>התראות תקציב</h3>
-                <p>⚠️ התקציב קרוב לסיום!</p>
-            </div>
+            <section className="alerts-section">
+                <h2>התראות</h2>
+                <div className="alert">⚠️ התקציב קרוב לסיום!</div>
+            </section>
 
-            <div className="upcoming-expenses">
-                <h3>הוצאות קבועות קרובות</h3>
-                <ul>
-                    {upcomingExpenses.map(expense => (
-                        <li key={expense.id}>
-                            {expense.description} - תאריך יעד: {expense.dueDate} - {expense.amount.toLocaleString()} ש"ח
-                        </li>
-                    ))}
+            <section className="upcoming-expenses-section">
+                <h2>הוצאות קבועות קרובות</h2>
+                <ul className="upcoming-expenses-list">
+                    <li>חשמל - ₪400 - 05/11/2024</li>
+                    <li>מים - ₪150 - 10/11/2024</li>
+                    <li>שכר דירה - ₪3,000 - 01/12/2024</li>
                 </ul>
-            </div>
+            </section>
+
+            <button className="add-expense-floating-button" onClick={goToAddExpense}>
+                +
+            </button>
         </div>
     );
 };

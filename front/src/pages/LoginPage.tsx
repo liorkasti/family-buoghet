@@ -11,8 +11,12 @@ const LoginPage: React.FC = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post('/api/users/login', { username, password });
+            const response = await axios.post('http://localhost:5004/api/users/login', { username, password });
+
             setMessage(response.data.message || 'התחברות הצליחה!');
+            
+            // ניתוב לעמוד הדשבורד אחרי התחברות מוצלחת
+            navigate('/dashboard');
         } catch (error: any) {
             if (error.response && error.response.status === 404) {
                 setMessage('המשתמש לא קיים. אנא הרשמו.');

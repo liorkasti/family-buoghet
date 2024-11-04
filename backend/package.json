@@ -20,6 +20,7 @@
   "devDependencies": {
     "nodemon": "^3.0.0"
   },
+  "proxy": "http://localhost:5004",
   "author": "Menachem Ushki",
   "license": "ISC"
 }
