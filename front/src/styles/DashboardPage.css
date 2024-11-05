@@ -21,7 +21,11 @@ h1 {
     color: #1976d2;
 }
 
-.budget-section, .recent-expenses-section, .charts-section, .alerts-section, .upcoming-expenses-section {
+.budget-section,
+.recent-expenses-section,
+.charts-section,
+.alerts-section,
+.upcoming-expenses-section {
     width: 100%;
     max-width: 800px;
     background-color: #ffffff;
@@ -46,14 +50,16 @@ h1 {
     background-color: #f9fbe7;
 }
 
-.expense-list, .upcoming-expenses-list {
+.expense-list,
+.upcoming-expenses-list {
     list-style-type: none;
     padding: 0;
     font-size: 18px;
     color: #555;
 }
 
-.expense-list li, .upcoming-expenses-list li {
+.expense-list li,
+.upcoming-expenses-list li {
     padding: 8px 0;
     border-bottom: 1px solid #eee;
 }
@@ -64,7 +70,8 @@ h1 {
     gap: 20px;
 }
 
-.pie-chart, .line-chart {
+.pie-chart,
+.line-chart {
     width: 45%;
     background-color: #fff8e1;
     padding: 20px;
@@ -76,6 +83,9 @@ h1 {
     color: #d32f2f;
     font-weight: bold;
     background-color: #ffebee;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .alert {
@@ -93,7 +103,7 @@ h1 {
     bottom: 20px;
     right: 20px;
     background-color: #1976d2;
-    color: #ffffff;
+    color: #3e2424;
     font-size: 30px;
     border: none;
     border-radius: 50%;
@@ -107,4 +117,62 @@ h1 {
 .add-expense-floating-button:hover {
     background-color: #1565c0;
     transform: scale(1.1);
+}
+
+/* סגנונות עבור תפריט האפשרויות */
+.options-menu {
+    position: fixed;
+    bottom: 90px; /* מיקום התפריט מעל כפתור הפלוס */
+    right: 30px; /* מיקום התפריט */
+    background-color: white; /* צבע רקע */
+    border: 1px solid #ccc; /* גבול לתפריט */
+    border-radius: 5px; /* פינות מעוגלות */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* צל */
+    z-index: 1000; /* לוודא שהתפריט נמצא מעל לתוכן אחר */
+    padding: 10px; /* ריפוד פנימי */
+    display: none; /* התפריט לא מוצג כברירת מחדל */
+}
+
+.options-menu button {
+    background-color: #3b3a5e; /* צבע רקע בהיר */
+    border: none; /* ללא גבול */
+    border-radius: 5px; /* פינות מעוגלות */
+    padding: 10px; /* ריפוד פנימי */
+    margin: 5px 0; /* רווח בין הכפתורים */
+    width: 100%; /* גודל מלא */
+    cursor: pointer; /* יד למעבר */
+}
+
+.options-menu button:hover {
+    background-color: #4a5065; /* צבע רקע כהה יותר בריחוף */
+}
+/* סגנונות עבור התפריט */
+.options-menu {
+    position: fixed;
+    bottom: 90px; /* מיקום התפריט מעל כפתור הפלוס */
+    right: 30px; /* מיקום התפריט */
+    background-color: rgb(186, 124, 124); /* צבע רקע */
+    border: 1px solid #6a74a4; /* גבול לתפריט */
+    border-radius: 5px; /* פינות מעוגלות */
+    box-shadow: 0 2px 10px rgba(78, 59, 59, 0.2); /* צל */
+    padding: 10px; /* ריפוד פנימי */
+    display: block; /* וידוא שהתפריט מוצג */
+    z-index: 1000; /* לוודא שהתפריט נמצא מעל לתוכן אחר */
+}
+
+
+.request-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #1976d2;
+    color: #6cb1aa;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.request-button:hover {
+    background-color: #1565c0;
 }

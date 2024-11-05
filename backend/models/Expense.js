@@ -1,11 +1,15 @@
+// models/Expense.js
+
 const mongoose = require('mongoose');
 
-const expenseSchema = new mongoose.Schema({
-  user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  date: { type: Date, required: true, default: Date.now },
-  category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
-  amount: { type: Number, required: true },
-  description: { type: String }
+const ExpenseSchema = new mongoose.Schema({
+    amount: { type: Number, required: true },
+    category: { type: String, required: true },
+    date: { type: Date, required: true },
+    description: { type: String },
+    isRecurring: { type: Boolean, default: false }, // שדה חדש עבור הוצאות קבועות
 });
 
-module.exports = mongoose.model('Expense', expenseSchema);
+const Expense = mongoose.model('Expense', ExpenseSchema);
+
+module.exports = Expense;

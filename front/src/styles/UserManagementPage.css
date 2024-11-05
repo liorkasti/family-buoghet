@@ -1,0 +1,23 @@
+.user-management-container {
+    padding: 20px;
+}
+
+.back-button {
+    margin-bottom: 15px;
+    padding: 5px 10px;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.users-table th, .users-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.add-user-button {
+    margin-top: 20px;
+    padding: 8px 15px;
+}

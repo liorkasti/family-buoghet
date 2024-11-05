@@ -1,20 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/DashboardPage.css'; // נוודא שיש תיקיה עם סגנונות
+import '../styles/DashboardPage.css';
 
 const DashboardPage: React.FC = () => {
     const navigate = useNavigate();
+    const [isOptionsVisible, setOptionsVisible] = useState(false); // מצב לתצוגת האפשרויות
 
-    const goToAddExpense = () => {
-        navigate('/add-expense'); // ניווט לדף הוספת הוצאה
+    const toggleOptions = () => {
+        console.log(isOptionsVisible); // בדיקה האם הערך מתחלף
+        setOptionsVisible(!isOptionsVisible);
+    };
+
+    const goToFixedExpenses = () => {
+        navigate('/fixed-expenses'); // מעבר לדף הוצאות קבועות
     };
 
     return (
         <div className="dashboard-container">
-            <header className="header">
-                <h1>דשבורד תקציב משפחתי</h1>
-            </header>
+            <h1>ברוך הבא לדף הבית</h1>
 
+            {/* כפתור להוספת הוצאות */}
+            <button className="add-expense-floating-button" onClick={toggleOptions}>
+                +
+            </button>
+
+            {/* תפריט אפשרויות */}
+            {isOptionsVisible && (
+                <div className="options-menu">
+                    <button onClick={() => navigate('/add-expense')}>הוספת הוצאה</button>
+                    <button onClick={() => navigate('/request')}>בקשה חדשה</button>
+                    <button onClick={goToFixedExpenses}>הוצאות קבועות</button>
+                    <button onClick={() => navigate('/expense-history')}>היסטוריית הוצאות</button>
+                    <button onClick={() => navigate('/user-management')}>ניהול משתמשים</button>
+                </div>
+            )}
+
+            {/* תוכן נוסף */}
             <section className="budget-section">
                 <h2>יתרת תקציב נוכחית</h2>
                 <div className="budget-balance">₪5,000</div>
@@ -53,10 +74,6 @@ const DashboardPage: React.FC = () => {
                     <li>שכר דירה - ₪3,000 - 01/12/2024</li>
                 </ul>
             </section>
-
-            <button className="add-expense-floating-button" onClick={goToAddExpense}>
-                +
-            </button>
         </div>
     );
 };

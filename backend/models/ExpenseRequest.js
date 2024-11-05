@@ -1,3 +1,4 @@
+// models/ExpenseRequest.js
 const mongoose = require('mongoose');
 
 const expenseRequestSchema = new mongoose.Schema({
