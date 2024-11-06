@@ -1,3 +1,4 @@
+// ייבוא ספריות חיצוניות
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -5,29 +6,34 @@ const bcrypt = require('bcrypt');
 const http = require('http');
 const { Server } = require('socket.io');
 require('dotenv').config();
+
+// ייבוא מודלים פנימיים
 const Budget = require('./models/Budget');
 const Alert = require('./models/Alert');
 const User = require('./models/User');  // ייבוא מודל משתמש
-const dashboardController = require('./controllers/dashboardController');  // ייבוא בקרת דשבורד
 
+// // ייבוא בקרת דשבורד
+const dashboardController = require('./controllers/dashboardController');  
+
+// הגדרות ראשוניות
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 const PORT = process.env.PORT || 5004;
 
-// חיבור למסד הנתונים
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/yourDatabaseName', {
+// // חיבור למסד הנתונים
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/familyBudgetDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Failed to connect to MongoDB:', err));
 
-// שימוש ב-CORS ו-JSON
+// // שימוש ב-CORS ו-JSON
 app.use(cors());
 app.use(express.json());
 
-// מסלול רישום משתמשים חדשים
+// // מסלול רישום משתמשים חדשים
 app.post('/api/users/signup', async (req, res) => {
   const { username, password, role } = req.body;
   try {
@@ -44,8 +50,9 @@ app.post('/api/users/signup', async (req, res) => {
   }
 });
 
-// מסלול התחברות משתמשים קיימים
+// // מסלול התחברות משתמשים קיימים
 app.post('/api/users/login', async (req, res) => {
+  console.log("----------==hello=================")
   const { username, password } = req.body;
   try {
     const user = await User.findOne({ username });
@@ -59,14 +66,14 @@ app.post('/api/users/login', async (req, res) => {
   }
 });
 
-// מסלולים לדשבורד
+// // מסלולים לדשבורד
 app.get('/api/dashboard', dashboardController.getDashboardData);
-app.get('/api/dashboard/budget-balance', dashboardController.getBudgetBalance);
-app.get('/api/dashboard/recent-expenses', dashboardController.getRecentExpenses);
-app.get('/api/dashboard/graph-data', dashboardController.getGraphData);
-app.get('/api/upcoming-expenses', dashboardController.getUpcomingRecurringExpenses);
+//app.get('/api/dashboard/budget-balance', dashboardController.getBudgetBalance);
+//app.get('/api/dashboard/recent-expenses', dashboardController.getRecentExpenses);
+//app.get('/api/dashboard/graph-data', dashboardController.getGraphData);
+// app.get('/api/dashboard/upcoming-expenses', dashboardController.getUpcomingRecurringExpenses);
 
-// ניהול Socket.IO
+// // ניהול Socket.IO
 io.on('connection', (socket) => {
   console.log('A user connected');
 

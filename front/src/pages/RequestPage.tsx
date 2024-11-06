@@ -13,7 +13,9 @@ interface Request {
 
 const RequestPage: React.FC = () => {
     const navigate = useNavigate();
-    const [requests, setRequests] = useState<Request[]>([]);
+    const [requests, setRequests] = useState<Request[]>([
+        { id: 1, amount: 150, description: 'בקשה לכרטיסי קולנוע', status: 'ממתין' },
+    ]);
     const [amount, setAmount] = useState('');
     const [description, setDescription] = useState('');
 
@@ -23,11 +25,11 @@ const RequestPage: React.FC = () => {
             return;
         }
 
-        const newRequest = {
+        const newRequest: Request = {
             id: requests.length + 1,
             amount: parseFloat(amount),
             description,
-            status: 'ממתין' as const, // זהו סוג קבוע
+            status: 'ממתין',
         };
         setRequests([...requests, newRequest]);
         setAmount('');

@@ -20,16 +20,14 @@ const UserManagementPage: React.FC = () => {
 
     const handleFormSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        const form = event.currentTarget as HTMLFormElement; // השתמש ב-event.currentTarget
-        const name = (form.elements.namedItem('name') as HTMLInputElement).value; // גישה לשדה דרך namedItem
+        const form = event.currentTarget as HTMLFormElement;
+        const name = (form.elements.namedItem('name') as HTMLInputElement).value;
         const role = (form.elements.namedItem('role') as HTMLInputElement).value;
         const budget = parseFloat((form.elements.namedItem('budget') as HTMLInputElement).value);
 
         if (currentUser) {
-            // עדכון משתמש קיים
             setUsers(users.map(user => (user.id === currentUser.id ? { ...user, name, role, budget } : user)));
         } else {
-            // הוספת משתמש חדש
             const newUser: User = {
                 id: users.length + 1,
                 name,

@@ -1,19 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../styles/DashboardPage.css';
+
+interface Expense {
+    title: string;
+    amount: number;
+    category: string;
+    date: string;
+}
+
+interface DashboardData {
+    recentExpenses: Expense[];
+    totalBudget: number;
+    upcomingExpenses: Expense[];
+}
 
 const DashboardPage: React.FC = () => {
     const navigate = useNavigate();
-    const [isOptionsVisible, setOptionsVisible] = useState(false); // מצב לתצוגת האפשרויות
+    const [isOptionsVisible, setOptionsVisible] = useState(false);
+    const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
 
-    const toggleOptions = () => {
-        console.log(isOptionsVisible); // בדיקה האם הערך מתחלף
-        setOptionsVisible(!isOptionsVisible);
-    };
+    useEffect(() => {
+        const fetchDashboardData = async () => {
+            try {
+                const response = await axios.get('/api/dashboard');
+                setDashboardData(response.data);
+            } catch (error) {
+                console.error("Error fetching dashboard data:", error);
+            }
+        };
+        fetchDashboardData();
+    }, []);
 
-    const goToFixedExpenses = () => {
-        navigate('/fixed-expenses'); // מעבר לדף הוצאות קבועות
-    };
+    const toggleOptions = () => setOptionsVisible(!isOptionsVisible);
 
     return (
         <div className="dashboard-container">
@@ -29,49 +49,35 @@ const DashboardPage: React.FC = () => {
                 <div className="options-menu">
                     <button onClick={() => navigate('/add-expense')}>הוספת הוצאה</button>
                     <button onClick={() => navigate('/request')}>בקשה חדשה</button>
-                    <button onClick={goToFixedExpenses}>הוצאות קבועות</button>
+                    <button onClick={() => navigate('/fixed-expenses')}>הוצאות קבועות</button>
                     <button onClick={() => navigate('/expense-history')}>היסטוריית הוצאות</button>
                     <button onClick={() => navigate('/user-management')}>ניהול משתמשים</button>
                 </div>
             )}
 
-            {/* תוכן נוסף */}
+            {/* יתרת תקציב */}
             <section className="budget-section">
                 <h2>יתרת תקציב נוכחית</h2>
-                <div className="budget-balance">₪5,000</div>
+                <div className="budget-balance">₪{dashboardData?.totalBudget}</div>
             </section>
 
+            {/* הוצאות אחרונות */}
             <section className="recent-expenses-section">
                 <h2>הוצאות אחרונות</h2>
                 <ul className="expense-list">
-                    <li>מזון - ₪100 - 01/11/2024</li>
-                    <li>תחבורה - ₪50 - 02/11/2024</li>
-                    <li>בילויים - ₪200 - 03/11/2024</li>
+                    {dashboardData?.recentExpenses.map((expense, index) => (
+                        <li key={index}>{expense.category} - ₪{expense.amount} - {new Date(expense.date).toLocaleDateString()}</li>
+                    ))}
                 </ul>
             </section>
 
-            <section className="charts-section">
-                <div className="pie-chart">
-                    <h2>התפלגות תקציב לפי קטגוריות</h2>
-                    {/* גרף עוגה */}
-                </div>
-                <div className="line-chart">
-                    <h2>מגמת הוצאות חודשית</h2>
-                    {/* גרף ציר זמן */}
-                </div>
-            </section>
-
-            <section className="alerts-section">
-                <h2>התראות</h2>
-                <div className="alert">⚠️ התקציב קרוב לסיום!</div>
-            </section>
-
+            {/* הוצאות קבועות קרובות */}
             <section className="upcoming-expenses-section">
                 <h2>הוצאות קבועות קרובות</h2>
                 <ul className="upcoming-expenses-list">
-                    <li>חשמל - ₪400 - 05/11/2024</li>
-                    <li>מים - ₪150 - 10/11/2024</li>
-                    <li>שכר דירה - ₪3,000 - 01/12/2024</li>
+                    {dashboardData?.upcomingExpenses.map((expense, index) => (
+                        <li key={index}>{expense.category} - ₪{expense.amount} - {new Date(expense.date).toLocaleDateString()}</li>
+                    ))}
                 </ul>
             </section>
         </div>
@@ -79,3 +85,5 @@ const DashboardPage: React.FC = () => {
 };
 
 export default DashboardPage;
+
+

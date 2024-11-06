@@ -11,10 +11,8 @@ const AddExpensePage: React.FC = () => {
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        // כאן נוסיף את הלוגיקה להוספת הוצאה (כמו שמירה במסד נתונים)
         console.log('הוצאה נוספת:', { title, amount, category, description });
 
-        // לאחר ההוספה, ננווט לדף הראשי
         navigate('/dashboard');
     };
 
@@ -53,7 +51,6 @@ const AddExpensePage: React.FC = () => {
                         <option value="תחבורה">תחבורה</option>
                         <option value="בילויים">בילויים</option>
                         <option value="ביגוד">ביגוד</option>
-                        {/* הוסף עוד קטגוריות אם צריך */}
                     </select>
                 </div>
                 <div>
