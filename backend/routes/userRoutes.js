@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/userController'); // ודא שהבקר נכון
+const userController = require('../controllers/userController'); // ייבוא קובץ הבקר
 
-// הגדרת המסלול
-router.post('/signup', userController.signup); // ודא שהפונקציה signup קיימת במנהל הבקר
+// נתיב ההתחברות
+router.post('/login', userController.login); // וודא שפונקציית login קיימת בבקר
+
+// נתיב ההרשמה
+router.post('/signup', userController.signup); // וודא שפונקציית signup קיימת בבקר
 
 module.exports = router;

@@ -12,12 +12,18 @@ const LoginPage: React.FC = () => {
     const handleLogin = async () => {
         try {
             const response = await axios.post('http://localhost:5004/api/users/login', { username, password });
-            let data = await response.data()
-            console.log(data) 
-            setMessage(response.data.message || 'התחברות הצליחה!');
             
-            // ניתוב לעמוד הדשבורד אחרי התחברות מוצלחת
-            navigate('/dashboard');
+            // בדיקה אם ה-token מתקבל בתגובה ושמירתו
+            const { token } = response.data;
+            if (token) {
+                localStorage.setItem('token', token); // שמירת ה-token ב-localStorage
+                setMessage(response.data.message || 'התחברות הצליחה!');
+                
+                // ניתוב לעמוד הדשבורד אחרי התחברות מוצלחת
+                navigate('/dashboard');
+            } else {
+                setMessage('התחברות נכשלה. נסה שוב.');
+            }
         } catch (error: any) {
             if (error.response && error.response.status === 404) {
                 setMessage('המשתמש לא קיים. אנא הרשמו.');
