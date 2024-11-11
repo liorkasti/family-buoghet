@@ -12,7 +12,8 @@ const LoginPage: React.FC = () => {
     const handleLogin = async () => {
         try {
             const response = await axios.post('http://localhost:5004/api/users/login', { username, password });
-
+            let data = await response.data()
+            console.log(data) 
             setMessage(response.data.message || 'התחברות הצליחה!');
             
             // ניתוב לעמוד הדשבורד אחרי התחברות מוצלחת

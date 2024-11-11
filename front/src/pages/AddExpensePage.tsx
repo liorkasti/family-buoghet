@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../styles/AddExpensePage.css';
 
 const AddExpensePage: React.FC = () => {
@@ -9,11 +10,26 @@ const AddExpensePage: React.FC = () => {
     const [category, setCategory] = useState('מזון');
     const [description, setDescription] = useState('');
 
-    const handleSubmit = (event: React.FormEvent) => {
+    const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        console.log('הוצאה נוספת:', { title, amount, category, description });
 
-        navigate('/dashboard');
+        try {
+            
+            await axios.post('http://localhost:5004/api/expenses', {
+                title,
+                amount: parseFloat(amount),
+                category,
+                description,
+                date: new Date().toISOString(),
+                isRecurring: false,
+                //TODO: Modify item name to 'user/id'
+                userId: localStorage.getItem('id') // יש להחליף במזהה המשתמש בפועל
+            });
+
+            navigate('/dashboard');
+        } catch (error) {
+            console.error('Error adding expense:', error);
+        }
     };
 
     return (
@@ -68,3 +84,4 @@ const AddExpensePage: React.FC = () => {
 };
 
 export default AddExpensePage;
+

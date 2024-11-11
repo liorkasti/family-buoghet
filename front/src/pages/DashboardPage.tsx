@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from 'axios';  // כאן נדרש import של axios
 import '../styles/DashboardPage.css';
 
 interface Expense {
@@ -24,14 +24,16 @@ const DashboardPage: React.FC = () => {
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
-                const response = await axios.get('/api/dashboard');
+                const response = await axios.get('http://localhost:5004/api/dashboard');
                 setDashboardData(response.data);
             } catch (error) {
                 console.error("Error fetching dashboard data:", error);
             }
         };
-        fetchDashboardData();
-    }, []);
+    
+        fetchDashboardData(); // הפונקציה צריכה להתבצע כאן
+    }, []); // הפונקציה תתבצע רק פעם אחת כאשר הקומפוננטה תיטען
+    
 
     const toggleOptions = () => setOptionsVisible(!isOptionsVisible);
 
@@ -85,5 +87,3 @@ const DashboardPage: React.FC = () => {
 };
 
 export default DashboardPage;
-
-
