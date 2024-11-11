@@ -31,7 +31,7 @@ const DashboardPage: React.FC = () => {
             }
         };
     
-        fetchDashboardData(); // הפונקציה צריכה להתבצע כאן
+        // fetchDashboardData(); // הפונקציה צריכה להתבצע כאן
     }, []); // הפונקציה תתבצע רק פעם אחת כאשר הקומפוננטה תיטען
     
 
