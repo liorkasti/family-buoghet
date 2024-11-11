@@ -78,8 +78,7 @@ app.post('/api/users/signup', async (req, res) => {
     if (existingUser) {
       console.warn('User already exists:', username);
       return res.status(200).json({ exists: true });
-    }
-
+    } 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, password: hashedPassword, role });
     //TODO: First understend what does save() do
