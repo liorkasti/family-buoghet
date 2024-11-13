@@ -1,103 +1,97 @@
-/* src/styles/LoginPage.css */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #e9eff7;
-    /* רקע בהיר */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
+/* LoginPage.css */
 .login-container {
-    max-width: 400px;
-    width: 100%;
-    padding: 40px;
+    max-width: 450px;
+    width: 90%;
+    padding: 2rem;
     background-color: #ffffff;
-    /* צבע רקע לתיבה */
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    /* צל */
-    border-radius: 10px;
-    /* קצוות מעוגלים */
-    text-align: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    margin: 2rem auto;
     direction: rtl;
-    /* כיוון טקסט מימין לשמאל */
 }
 
-h2 {
-    font-size: 1.8em;
-    color: #333333;
-    /* צבע הכותרת */
-    margin-bottom: 20px;
-}
-
-input[type="text"],
-input[type="password"],
-select {
+.input-field,
+.role-select {
     width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    font-size: 1em;
-    transition: border-color 0.3s;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #f8fafc;
+    margin-bottom: 1rem;
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus,
-select:focus {
-    border-color: #3b5998;
-    /* צבע גבול בעת פוקוס */
+.input-field:focus,
+.role-select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     outline: none;
 }
 
-button {
+.login-button {
     width: 100%;
-    padding: 14px;
-    background-color: #3b5998;
-    /* צבע הכפתור */
+    padding: 0.75rem;
+    background-color: #3b82f6;
     color: white;
-    font-size: 1em;
-    font-weight: bold;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #2d4373;
+.login-button:hover {
+    background-color: #2563eb;
 }
 
-p.error {
-    color: #ff4d4f;
-    /* צבע הודעת שגיאה */
-    font-size: 0.9em;
-    margin-top: -10px;
-    margin-bottom: 10px;
+.login-button:disabled {
+    background-color: #93c5fd;
+    cursor: not-allowed;
+}
+
+.secondary-button {
+    padding: 0.5rem 1rem;
+    background-color: #e2e8f0;
+    color: #1e293b;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.secondary-button:hover {
+    background-color: #cbd5e1;
+}
+
+.forgot-password {
+    color: #3b82f6;
+    text-decoration: none;
+    font-size: 0.875rem;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.message {
+    padding: 0.75rem;
+    border-radius: 6px;
+    margin-top: 1rem;
     text-align: center;
 }
 
-a {
-    color: #3b5998;
-    /* צבע קישור */
-    text-decoration: none;
-    font-size: 0.9em;
-    transition: color 0.3s;
+.message.error {
+    background-color: #fee2e2;
+    color: #dc2626;
 }
 
-a:hover {
-    color: #2d4373;
+.message.success {
+    background-color: #dcfce7;
+    color: #16a34a;
 }
 
-.role-select {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1em;
+.form-group {
+    margin-bottom: 1rem;
 }

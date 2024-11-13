@@ -31,39 +31,58 @@ const DashboardPage: React.FC = () => {
             }
         };
     
-        // fetchDashboardData(); // הפונקציה צריכה להתבצע כאן
+        fetchDashboardData(); // הפונקציה צריכה להתבצע כאן
     }, []); // הפונקציה תתבצע רק פעם אחת כאשר הקומפוננטה תיטען
     
+    const username = localStorage.getItem('username');  // בהנחה שהמשתמש נשמר ב-localStorage
+
+    const handleLogout = () => {
+        localStorage.removeItem('token'); // הסרת ה-token
+        localStorage.removeItem('username'); // הסרת שם המשתמש
+        navigate('/login'); // חזרה לדף הכניסה
+    };
 
     const toggleOptions = () => setOptionsVisible(!isOptionsVisible);
 
     return (
         <div className="dashboard-container">
-            <h1>ברוך הבא לדף הבית</h1>
+            <h1>שלום {username ? `, ${username}` : ''}</h1>
 
-            {/* כפתור להוספת הוצאות */}
-            <button className="add-expense-floating-button" onClick={toggleOptions}>
+            <button onClick={handleLogout}>יציאה</button>
+
+            <button 
+                className="add-expense-floating-button" 
+                onClick={toggleOptions}
+                aria-label="תפריט אפשרויות"
+            >
                 +
             </button>
 
-            {/* תפריט אפשרויות */}
             {isOptionsVisible && (
                 <div className="options-menu">
-                    <button onClick={() => navigate('/add-expense')}>הוספת הוצאה</button>
-                    <button onClick={() => navigate('/request')}>בקשה חדשה</button>
-                    <button onClick={() => navigate('/fixed-expenses')}>הוצאות קבועות</button>
-                    <button onClick={() => navigate('/expense-history')}>היסטוריית הוצאות</button>
-                    <button onClick={() => navigate('/user-management')}>ניהול משתמשים</button>
+                    <button onClick={() => navigate('/add-expense')}>
+                        🧾 הוספת הוצאה
+                    </button>
+                    <button onClick={() => navigate('/request')}>
+                        📝 בקשה חדשה
+                    </button>
+                    <button onClick={() => navigate('/fixed-expenses')}>
+                        📅 הוצאות קבועות
+                    </button>
+                    <button onClick={() => navigate('/expense-history')}>
+                        📊 היסטוריית הוצאות
+                    </button>
+                    <button onClick={() => navigate('/user-management')}>
+                        👥 ניהול משתמשים
+                    </button>
                 </div>
             )}
 
-            {/* יתרת תקציב */}
             <section className="budget-section">
                 <h2>יתרת תקציב נוכחית</h2>
                 <div className="budget-balance">₪{dashboardData?.totalBudget}</div>
             </section>
 
-            {/* הוצאות אחרונות */}
             <section className="recent-expenses-section">
                 <h2>הוצאות אחרונות</h2>
                 <ul className="expense-list">
@@ -73,7 +92,6 @@ const DashboardPage: React.FC = () => {
                 </ul>
             </section>
 
-            {/* הוצאות קבועות קרובות */}
             <section className="upcoming-expenses-section">
                 <h2>הוצאות קבועות קרובות</h2>
                 <ul className="upcoming-expenses-list">
@@ -87,3 +105,6 @@ const DashboardPage: React.FC = () => {
 };
 
 export default DashboardPage;
+
+
+

@@ -2,24 +2,56 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+interface FormData {
+    username: string;
+    password: string;
+    role: 'parent' | 'child';
+    userId: string;
+}
+
 const SignupPage: React.FC = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [role, setRole] = useState('');
+    const [formData, setFormData] = useState<FormData>({
+        username: '',
+        password: '',
+        role: 'parent',
+        userId: '',
+    });
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const validateForm = (): boolean => {
+        if (!formData.username.trim()) {
+            setMessage('נא להזין שם משתמש');
+            return false;
+        }
+        if (!formData.password.trim()) {
+            setMessage('נא להזין סיסמה');
+            return false;
+        }
+        if (!formData.userId.trim()) {
+            setMessage('נא להזין מזהה משתמש');
+            return false;
+        }
+        return true;
+    };
+
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
-        try {
-            const response = await axios.post('http://localhost:5004/api/users/signup', { username, password, role });
+        if (!validateForm()) return;
 
+        try {
+            const response = await axios.post<{ exists: boolean }>('http://localhost:5004/api/users/signup', formData);
             if (response.data.exists) {
                 setMessage('המשתמש קיים כבר. בבקשה הזן שם משתמש אחר.');
             } else {
                 setMessage('ההרשמה הצליחה!');
-                
-                // ניווט לדף הדשבורד לאחר הרשמה מוצלחת
                 navigate('/dashboard');
             }
         } catch (error) {
@@ -28,36 +60,55 @@ const SignupPage: React.FC = () => {
     };
 
     return (
-        <div>
-            <h2>דף הרשמה</h2>
-            <form onSubmit={handleSignup}>
-                <label>שם משתמש:
+        <div className="signup-container">
+            <h2 className="text-2xl font-bold mb-6">דף הרשמה</h2>
+            <form onSubmit={handleSignup} className="space-y-4">
+                <div className="form-group">
                     <input
                         type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        name="userId"
+                        placeholder="מזהה משתמש"
+                        value={formData.userId}
+                        onChange={handleInputChange}
+                        className="input-field"
                     />
-                </label>
-                <br />
-                <label>סיסמה:
+                </div>
+                <div className="form-group">
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="שם משתמש"
+                        value={formData.username}
+                        onChange={handleInputChange}
+                        className="input-field"
+                    />
+                </div>
+                <div className="form-group">
                     <input
                         type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        name="password"
+                        placeholder="סיסמה"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        className="input-field"
                     />
-                </label>
-                <br />
-                <label>תפקיד:
-                    <select value={role} onChange={(e) => setRole(e.target.value)}>
-                        <option value="">בחר תפקיד</option>
+                </div>
+                <div className="form-group">
+                    <select
+                        name="role"
+                        value={formData.role}
+                        onChange={handleInputChange}
+                        className="role-select"
+                    >
                         <option value="parent">הורה</option>
                         <option value="child">ילד</option>
                     </select>
-                </label>
-                <br />
-                <button type="submit">הירשם</button>
+                </div>
+                <button type="submit" className="signup-button">
+                    הירשם
+                </button>
             </form>
-            {message && <p>{message}</p>}
+            {message && <div className="message">{message}</div>}
         </div>
     );
 };

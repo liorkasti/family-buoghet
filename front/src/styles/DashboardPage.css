@@ -103,7 +103,7 @@ h1 {
     bottom: 20px;
     right: 20px;
     background-color: #1976d2;
-    color: #3e2424;
+    color: #ffffff;
     font-size: 30px;
     border: none;
     border-radius: 50%;
@@ -119,47 +119,50 @@ h1 {
     transform: scale(1.1);
 }
 
-/* סגנונות עבור תפריט האפשרויות */
+/* עדכון סגנונות לתפריט האפשרויות */
 .options-menu {
     position: fixed;
-    bottom: 90px; /* מיקום התפריט מעל כפתור הפלוס */
-    right: 30px; /* מיקום התפריט */
-    background-color: white; /* צבע רקע */
-    border: 1px solid #ccc; /* גבול לתפריט */
-    border-radius: 5px; /* פינות מעוגלות */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* צל */
-    z-index: 1000; /* לוודא שהתפריט נמצא מעל לתוכן אחר */
-    padding: 10px; /* ריפוד פנימי */
-    display: none; /* התפריט לא מוצג כברירת מחדל */
+    bottom: 90px;
+    right: 30px;
+    background-color: #ffffff;
+    border: 1px solid #1976d2;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    display: block;
+    z-index: 1000;
+    width: 200px;
 }
 
 .options-menu button {
-    background-color: #3b3a5e; /* צבע רקע בהיר */
-    border: none; /* ללא גבול */
-    border-radius: 5px; /* פינות מעוגלות */
-    padding: 10px; /* ריפוד פנימי */
-    margin: 5px 0; /* רווח בין הכפתורים */
-    width: 100%; /* גודל מלא */
-    cursor: pointer; /* יד למעבר */
+    background-color: #e3f2fd;
+    color: #1976d2;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 8px 0;
+    width: 100%;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
 }
 
 .options-menu button:hover {
-    background-color: #4a5065; /* צבע רקע כהה יותר בריחוף */
-}
-/* סגנונות עבור התפריט */
-.options-menu {
-    position: fixed;
-    bottom: 90px; /* מיקום התפריט מעל כפתור הפלוס */
-    right: 30px; /* מיקום התפריט */
-    background-color: rgb(186, 124, 124); /* צבע רקע */
-    border: 1px solid #6a74a4; /* גבול לתפריט */
-    border-radius: 5px; /* פינות מעוגלות */
-    box-shadow: 0 2px 10px rgba(78, 59, 59, 0.2); /* צל */
-    padding: 10px; /* ריפוד פנימי */
-    display: block; /* וידוא שהתפריט מוצג */
-    z-index: 1000; /* לוודא שהתפריט נמצא מעל לתוכן אחר */
+    background-color: #1976d2;
+    color: #ffffff;
+    transform: translateX(-5px);
 }
 
+/* עדכון כפתור הפלוס */
+.add-expense-floating-button {
+    background-color: #1976d2;
+    color: #ffffff;
+}
+
+/* עדכון צבעי טקסט */
+h1, h2 {
+    color: #1976d2;
+}
 
 .request-button {
     margin-top: 20px;
