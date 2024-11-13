@@ -47,7 +47,7 @@ const SignupPage: React.FC = () => {
         if (!validateForm()) return;
 
         try {
-            const response = await axios.post<{ exists: boolean }>('http://localhost:5004/api/users/signup', formData);
+            const response = await axios.post<{ exists: boolean }>('http://localhost:5004/api/auth/signup', formData);
             if (response.data.exists) {
                 setMessage('המשתמש קיים כבר. בבקשה הזן שם משתמש אחר.');
             } else {

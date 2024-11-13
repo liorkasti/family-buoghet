@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
@@ -47,8 +46,8 @@ app.use('/api/dashboard', dashboardRoutes);
 
 // בדיקת בריאות
 app.get('/health', (req, res) => {
-    res.status(200).json({ 
-        status: 'OK', 
+    res.status(200).json({
+        status: 'OK',
         timestamp: new Date(),
         env: process.env.NODE_ENV
     });
@@ -62,7 +61,7 @@ app.use((req, res) => {
 // טיפול בשגיאות כללי
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).json({ 
+    res.status(500).json({
         error: 'Internal Server Error',
         message: process.env.NODE_ENV === 'development' ? err.message : undefined
     });
@@ -73,7 +72,7 @@ const startServer = async () => {
     try {
         await connectDB();
         const PORT = process.env.PORT || 5004;
-        
+
         server.listen(PORT, () => {
             console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
         });
@@ -85,7 +84,6 @@ const startServer = async () => {
                 console.log('Client disconnected');
             });
         });
-
     } catch (error) {
         console.error('Failed to start server:', error);
         process.exit(1);
