@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 interface FormData {
@@ -55,7 +55,12 @@ const SignupPage: React.FC = () => {
                 navigate('/dashboard');
             }
         } catch (error) {
-            setMessage('שגיאה בהרשמה, נסה שוב.');
+            const axiosError = error as AxiosError;
+            setMessage(
+                axiosError.response?.status === 404
+                    ? 'המשתמש לא קיים. אנא הירשמו.'
+                    : 'שגיאה בהרשמה, נסה שוב.'
+            );
         }
     };
 

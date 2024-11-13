@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';  // כאן נדרש import של axios
+import axios from 'axios';
 import '../styles/DashboardPage.css';
 
 interface Expense {
@@ -16,10 +16,16 @@ interface DashboardData {
     upcomingExpenses: Expense[];
 }
 
+interface UserData {
+    username: string;
+    // Add other user data properties as needed
+}
+
 const DashboardPage: React.FC = () => {
     const navigate = useNavigate();
     const [isOptionsVisible, setOptionsVisible] = useState(false);
     const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+    const [userData, setUserData] = useState<UserData | null>(null);
 
     useEffect(() => {
         const fetchDashboardData = async () => {
@@ -30,28 +36,35 @@ const DashboardPage: React.FC = () => {
                 console.error("Error fetching dashboard data:", error);
             }
         };
-    
-        fetchDashboardData(); // הפונקציה צריכה להתבצע כאן
-    }, []); // הפונקציה תתבצע רק פעם אחת כאשר הקומפוננטה תיטען
-    
-    const username = localStorage.getItem('username');  // בהנחה שהמשתמש נשמר ב-localStorage
+
+        const fetchUserData = async () => {
+            try {
+                const response = await axios.get('http://localhost:5004/api/user');
+                setUserData(response.data);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        };
+
+        fetchDashboardData();
+        fetchUserData();
+    }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem('token'); // הסרת ה-token
-        localStorage.removeItem('username'); // הסרת שם המשתמש
-        navigate('/login'); // חזרה לדף הכניסה
+        // Perform logout logic, such as clearing tokens or session data
+        navigate('/login');
     };
 
     const toggleOptions = () => setOptionsVisible(!isOptionsVisible);
 
     return (
         <div className="dashboard-container">
-            <h1>שלום {username ? `, ${username}` : ''}</h1>
+            <h1>שלום {userData?.username ? `, ${userData.username}` : ''}</h1>
 
             <button onClick={handleLogout}>יציאה</button>
 
-            <button 
-                className="add-expense-floating-button" 
+            <button
+                className="add-expense-floating-button"
                 onClick={toggleOptions}
                 aria-label="תפריט אפשרויות"
             >
@@ -105,6 +118,3 @@ const DashboardPage: React.FC = () => {
 };
 
 export default DashboardPage;
-
-
-
