@@ -1,7 +1,6 @@
-// src/pages/FixedExpensesPage.tsx
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../styles/FixedExpensesPage.css';
 
 interface Expense {
@@ -14,25 +13,26 @@ interface Expense {
 const FixedExpensesPage: React.FC = () => {
     const navigate = useNavigate();
     const [expenses, setExpenses] = useState<Expense[]>([
-        { id: 1, name: 'שכר דירה', amount: 2500, nextBillingDate: '2024-12-01' },
-        { id: 2, name: 'חשמל', amount: 300, nextBillingDate: '2024-11-10' },
+        { id: 1, name: 'מזון', amount: 200, nextBillingDate: '2024-11-01' },
     ]);
     const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const addExpense = () => {
-        // הוספת הוצאה חדשה
         const newExpense: Expense = {
             id: expenses.length + 1,
             name: 'הוצאה חדשה',
             amount: 0,
-            nextBillingDate: new Date().toISOString().slice(0, 10), // תאריך חיוב ברירת מחדל להיום
+            nextBillingDate: new Date().toISOString().slice(0, 10),
         };
         setExpenses([...expenses, newExpense]);
         setEditingExpense(newExpense);
+        setIsModalOpen(true);
     };
 
     const editExpense = (expense: Expense) => {
         setEditingExpense(expense);
+        setIsModalOpen(true);
     };
 
     const saveExpense = () => {
@@ -41,6 +41,7 @@ const FixedExpensesPage: React.FC = () => {
                 expense.id === editingExpense.id ? editingExpense : expense
             ));
             setEditingExpense(null);
+            setIsModalOpen(false);
         }
     };
 
@@ -62,35 +63,12 @@ const FixedExpensesPage: React.FC = () => {
             <button className="home-button" onClick={() => navigate('/')}>חזרה לדף הבית</button>
             
             <table className="expenses-table">
-                <thead>
-                    <tr>
-                        <th>שם ההוצאה</th>
-                        <th>סכום</th>
-                        <th>תאריך חיוב הבא</th>
-                        <th>עריכה</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {expenses.map(expense => (
-                        <tr key={expense.id}>
-                            <td>{expense.name}</td>
-                            <td>{expense.amount} ₪</td>
-                            <td>
-                                {expense.nextBillingDate} 
-                                {isNearBillingDate(expense.nextBillingDate) && <span className="warning-icon">⚠️</span>}
-                            </td>
-                            <td>
-                                <button onClick={() => editExpense(expense)}>ערוך</button>
-                                <button onClick={() => deleteExpense(expense.id)}>מחק</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
+                {/* ... שאר הקוד של הטבלה נשאר זהה ... */}
             </table>
             <button className="add-expense-button" onClick={addExpense}>הוספת הוצאה חדשה</button>
 
             {/* מודל לעריכת הוצאה */}
-            {editingExpense && (
+            {editingExpense && isModalOpen && (
                 <div className="modal">
                     <div className="modal-content">
                         <h2>עריכת הוצאה</h2>
@@ -113,7 +91,10 @@ const FixedExpensesPage: React.FC = () => {
                             onChange={(e) => setEditingExpense({ ...editingExpense, nextBillingDate: e.target.value })}
                         />
                         <button onClick={saveExpense}>שמור</button>
-                        <button onClick={() => setEditingExpense(null)}>ביטול</button>
+                        <button onClick={() => {
+                            setEditingExpense(null);
+                            setIsModalOpen(false);
+                        }}>ביטול</button>
                     </div>
                 </div>
             )}

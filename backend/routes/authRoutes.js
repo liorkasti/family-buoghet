@@ -12,11 +12,12 @@
 
 // module.exports = router;
 
-const express = require('express');
-const router = express.Router();
-const userController = require('../controllers/userController');
+// // routes/authRoutes.js
+// const express = require('express');
+// const router = express.Router();
+// const userController = require('../controllers/userController');
 
-// הגדרת המסלול להרשמה
-router.post('/signup', userController.signup);
+// // הגדרת המסלול להרשמה
+// router.post('/signup', userController.signup);
 
-module.exports = router;
+// module.exports = router;

@@ -1,4 +1,3 @@
-// controllers/expenseController.js
 const Expense = require('../models/Expense');
 const Budget = require('../models/Budget');
 
@@ -7,7 +6,7 @@ exports.addExpense = async (req, res) => {
     try {
         const { 
             amount, 
-            category, 
+            category,
             date, 
             description, 
             isRecurring,
@@ -202,6 +201,18 @@ exports.getExpenseSummary = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({ message: 'שגיאה בקבלת סיכום ההוצאות', error: error.message });
+    }
+};
+
+// קבלת היסטוריית הוצאות
+exports.getExpenseHistory = async (req, res) => {
+    try {
+        const { userId } = req.query;
+
+        const expenses = await Expense.find({ userId }).sort({ date: -1 });
+        res.json(expenses);
+    } catch (error) {
+        res.status(500).json({ message: 'שגיאה בקבלת היסטוריית ההוצאות', error: error.message });
     }
 };
 

@@ -1,66 +1,61 @@
 const Budget = require('../models/Budget');
 const Expense = require('../models/Expense');
+const Request = require('../models/Request');
+const User = require('../models/User');
 
-// פונקציה לקבלת נתוני הדשבורד, כולל הוצאות אחרונות, יתרת התקציב, הוצאות קבועות קרובות והתראות
 exports.getDashboardData = async (req, res) => {
     try {
-        // קבלת 5 ההוצאות האחרונות
-        const recentExpenses = await Expense.find().sort({ date: -1 }).limit(5);
+        const userId = req.params.userId;
+        const user = await User.findById(userId);
+        
+        if (!user) {
+            return res.status(404).json({ message: 'משתמש לא נמצא' });
+        }
 
-        // חישוב יתרת התקציב
-        const budget = await Budget.findOne({});
-        const totalExpenses = await Expense.aggregate([
-            { $group: { _id: null, total: { $sum: "$amount" } } }
-        ]);
-        const totalBudget = budget ? (budget.amount - (totalExpenses[0] ? totalExpenses[0].total : 0)) : 0;
-
-        // הוצאות קבועות קרובות (לחודש הקרוב)
         const today = new Date();
-        const nextMonth = new Date(today);
-        nextMonth.setMonth(today.getMonth() + 1);
+        const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 
-        const upcomingExpenses = await Expense.find({
-            isRecurring: true,
-            date: { $gte: today, $lt: nextMonth }
-        }).sort({ date: 1 }).limit(3);
-
-        // בדיקת חריגות והצגת התראות
-        const alerts = await checkAlerts(budget, totalExpenses);
-
-        // החזרת כל נתוני הדשבורד
-        res.json({
-            recentExpenses,
-            totalBudget,
-            upcomingExpenses,
-            alerts
+        // קבלת נתוני תקציב ומעקב אחר הוצאות
+        const budget = await Budget.findOne({ userId });
+        const expenses = await Expense.find({
+            userId,
+            date: { $gte: firstDayOfMonth, $lte: lastDayOfMonth }
         });
+
+        // חישוב סטטיסטיקות חודשיות
+        const monthlyStats = await calculateMonthlyStats(userId, firstDayOfMonth, lastDayOfMonth);
+
+        // בדיקת התראות
+        const alerts = await checkAlerts(budget, expenses);
+
+        // בדיקת בקשות ממתינות (עבור הורים)
+        if (user.role === 'parent') {
+            const pendingRequests = await Request.find({ 
+                parentId: userId,
+                status: 'pending'
+            });
+            
+            if (pendingRequests.length > 0) {
+                alerts.push({
+                    message: `יש ${pendingRequests.length} בקשות ממתינות לאישור`,
+                    type: 'info'
+                });
+            }
+        }
+
+        res.json({
+            totalBudget: budget?.amount || 0,
+            recentExpenses: await getRecentExpenses(userId),
+            upcomingExpenses: await getUpcomingExpenses(userId),
+            alerts,
+            monthlyStats
+        });
+
     } catch (error) {
+        console.error('שגיאה בקבלת נתוני דשבורד:', error);
         res.status(500).json({ message: 'שגיאה בשרת' });
     }
 };
 
-// פונקציה לבדיקת חריגות והצגת התראות
-const checkAlerts = async (budget, totalExpenses) => {
-    try {
-        const total = totalExpenses[0] ? totalExpenses[0].total : 0;
-        const alerts = [];
-
-        // בדיקה אם ההוצאות חורגות מהתקציב
-        if (budget && total > budget.amount) {
-            alerts.push({ message: 'הוצאות חורגות מהתקציב!', type: 'error', date: new Date() });
-        }
-
-        // בדיקה אם התקציב קרוב למיצוי (90%)
-        if (budget && total >= budget.amount * 0.9) {
-            alerts.push({ message: 'התקציב קרוב למיצוי!', type: 'warning', date: new Date() });
-        }
-
-        return alerts;
-    } catch (error) {
-        console.error('שגיאה בבדיקת התראות:', error);
-        return [];
-    }
-};
-
-// ייצוא הפונקציה checkAlerts כדי לאפשר ייבוא חיצוני במידת הצורך
-exports.checkAlerts = checkAlerts;
+// המשך הפונקציות הקיימות...

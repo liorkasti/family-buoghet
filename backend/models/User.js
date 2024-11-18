@@ -1,6 +1,6 @@
 // models/User.js
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -8,25 +8,20 @@ const userSchema = new mongoose.Schema({
         required: [true, 'שם משתמש הוא שדה חובה'],
         unique: true,
         trim: true,
-        minlength: [3, 'שם משתמש חייב להכיל לפחות 3 תווים']
-    },
-    password: {
-        type: String,
-        required: [true, 'סיסמה היא שדה חובה'],
-        minlength: [6, 'סיסמה חייבת להכיל לפחות 6 תווים'],
-        select: false // לא יוחזר בשאילתות רגילות
+        lowercase: true
     },
     email: {
         type: String,
         required: [true, 'אימייל הוא שדה חובה'],
         unique: true,
+        trim: true,
         lowercase: true,
-        validate: {
-            validator: function(v) {
-                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-            },
-            message: 'כתובת אימייל לא תקינה'
-        }
+        match: [/^\S+@\S+\.\S+$/, 'אנא הכנס כתובת אימייל תקינה']
+    },
+    password: {
+        type: String,
+        required: [true, 'סיסמה היא שדה חובה'],
+        minlength: [6, 'הסיסמה חייבת להכיל לפחות 6 תווים']
     },
     role: {
         type: String,
@@ -36,31 +31,28 @@ const userSchema = new mongoose.Schema({
     parentId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: function() { 
-            return this.role === 'child';
-        }
-    },
-    accountLocked: {
-        type: Boolean,
-        default: false
-    },
-    lockUntil: {
-        type: Date
+        default: null
     },
     failedLoginAttempts: {
         type: Number,
         default: 0
     },
-    lastLogin: {
-        type: Date
+    lockUntil: {
+        type: Date,
+        default: null
     },
-    createdAt: {
+    lastLogin: {
         type: Date,
         default: Date.now
     },
-    resetPasswordToken: String,
-    resetPasswordExpires: Date,
-    passwordChangedAt: Date
+    linkCode: {
+        type: String,
+        default: null
+    },
+    linkCodeExpires: {
+        type: Date,
+        default: null
+    }
 }, {
     timestamps: true
 });
@@ -75,9 +67,8 @@ userSchema.virtual('isLocked').get(function() {
     return this.accountLocked && this.lockUntil > Date.now();
 });
 
-// מידלוור לפני שמירה
+// הצפנת סיסמה לפני שמירה
 userSchema.pre('save', async function(next) {
-    // אם הסיסמה לא שונתה, המשך
     if (!this.isModified('password')) return next();
     
     try {
@@ -94,7 +85,7 @@ userSchema.statics.findByEmail = function(email) {
     return this.findOne({ email: email.toLowerCase() });
 };
 
-// מתודות של המסמך
+// השוואת סיסמאות
 userSchema.methods.comparePassword = async function(candidatePassword) {
     try {
         return await bcrypt.compare(candidatePassword, this.password);
@@ -103,23 +94,22 @@ userSchema.methods.comparePassword = async function(candidatePassword) {
     }
 };
 
+// טיפול בניסיונות התחברות כושלים
 userSchema.methods.incrementLoginAttempts = async function() {
-    // מעדכן את מספר ניסיונות הכניסה הכושלים
-    this.failedLoginAttempts = (this.failedLoginAttempts || 0) + 1;
+    this.failedLoginAttempts += 1;
     
     if (this.failedLoginAttempts >= 5) {
-        this.accountLocked = true;
-        this.lockUntil = new Date(Date.now() + 30 * 60 * 1000); // 30 דקות
+        this.lockUntil = new Date(Date.now() + 30 * 60 * 1000); // נעילה ל-30 דקות
     }
     
-    return this.save();
+    await this.save();
 };
 
-userSchema.methods.resetLoginAttempts = function() {
+// איפוס ניסיונות התחברות
+userSchema.methods.resetLoginAttempts = async function() {
     this.failedLoginAttempts = 0;
-    this.accountLocked = false;
     this.lockUntil = null;
-    return this.save();
+    await this.save();
 };
 
 const User = mongoose.model('User', userSchema);

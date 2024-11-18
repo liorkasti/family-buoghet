@@ -1,16 +1,16 @@
+// server.js
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const connectDB = require('./config/db');
 require('dotenv').config();
 
-// ייבוא מסלולים
-const authRoutes = require('./routes/authRoutes');
-const expenseRoutes = require('./routes/expenseRoutes');
-const dashboardRoutes = require('./routes/dashboardRoutes');
+// ייבוא נתיבים מאוחדים
+const authRoutes = require('./routes/auth');
+const connectDB = require('./db'); // ייבוא החיבור למסד הנתונים
+const dashboardRoutes = require('./routes/dashboard');
 
 // הגדרות ראשוניות
 const app = express();
@@ -30,6 +30,11 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.json());
+// שימוש בנתיבים המאוחדים
+console.log('Registering routes...');
+app.use('/api/auth', authRoutes);
+console.log('Routes registered successfully');
+app.use('/api/dashboard', dashboardRoutes);
 
 // טיפול בשגיאות JSON
 app.use((err, req, res, next) => {
@@ -39,10 +44,12 @@ app.use((err, req, res, next) => {
     next();
 });
 
-// נתיבי API
-app.use('/api/auth', authRoutes);
-app.use('/api/expenses', expenseRoutes);
-app.use('/api/dashboard', dashboardRoutes);
+// הוסף אחרי שורה 32
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    console.log('Request Body:', req.body);
+    next();
+});
 
 // בדיקת בריאות
 app.get('/health', (req, res) => {
@@ -53,37 +60,45 @@ app.get('/health', (req, res) => {
     });
 });
 
-// טיפול בנתיב לא קיים
-app.use((req, res) => {
-    res.status(404).json({ error: 'Route not found' });
-});
-
-// טיפול בשגיאות כללי
+// הוסף אחרי שורה 44
+// טיפול בשגיאות כלליות
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({
-        error: 'Internal Server Error',
-        message: process.env.NODE_ENV === 'development' ? err.message : undefined
+    console.error('Server Error:', err);
+    res.status(500).json({ 
+        message: 'שגיאת שרת פנימית', 
+        error: process.env.NODE_ENV === 'development' ? err.message : undefined 
     });
 });
 
 // התחברות למסד הנתונים והפעלת השרת
 const startServer = async () => {
     try {
-        await connectDB();
+        await connectDB(); // חיבור למסד הנתונים מתוך הקובץ db.js
+        console.log('Connected to MongoDB');
+        
         const PORT = process.env.PORT || 5004;
-
         server.listen(PORT, () => {
             console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
         });
-
-        // ניהול Socket.IO
-        io.on('connection', (socket) => {
-            console.log('Client connected');
-            socket.on('disconnect', () => {
-                console.log('Client disconnected');
-            });
-        });
+        
+        // // ניהול Socket.IO
+        // io.on('connection', (socket) => {
+        //     console.log('Client connected');
+            
+        //     socket.on('disconnect', () => {
+        //         console.log('Client disconnected');
+        //     });
+            
+        //     // אירועי זמן אמת
+        //     socket.on('expense:added', (data) => {
+        //         socket.broadcast.emit('expense:update', data);
+        //     });
+            
+        //     socket.on('budget:updated', (data) => {
+        //         socket.broadcast.emit('budget:update', data);
+        //     });
+        // });
+        
     } catch (error) {
         console.error('Failed to start server:', error);
         process.exit(1);
@@ -92,13 +107,21 @@ const startServer = async () => {
 
 startServer();
 
-// טיפול בסגירה נקייה של השרת
-process.on('SIGTERM', () => {
-    console.log('SIGTERM received. Shutting down gracefully');
+// טיפול בסגירה נקייה
+const gracefulShutdown = () => {
+    console.log('Received kill signal, shutting down gracefully');
     server.close(() => {
-        console.log('Process terminated');
+        console.log('Closed out remaining connections');
         process.exit(0);
     });
-});
+
+    setTimeout(() => {
+        console.error('Could not close connections in time, forcefully shutting down');
+        process.exit(1);
+    }, 10000);
+};
+
+process.on('SIGTERM', gracefulShutdown);
+process.on('SIGINT', gracefulShutdown);
 
 module.exports = server;
