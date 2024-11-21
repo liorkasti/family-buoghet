@@ -1,3 +1,4 @@
+
 // models/Budget.js
 const mongoose = require('mongoose');
 

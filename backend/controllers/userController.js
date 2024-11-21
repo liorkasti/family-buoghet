@@ -61,6 +61,7 @@ exports.signup = async (req, res) => {
             ]
         });
 
+        // Validate if user already exists
         if (existingUser) {
             console.log('User already exists:', {
                 existingEmail: existingUser.email,
@@ -74,6 +75,7 @@ exports.signup = async (req, res) => {
             });
         }
 
+        // Proceed to create a new user if no existing user is found
         console.log('Creating new user...');
         const user = new User({
             username: username.toLowerCase(),
@@ -98,6 +100,7 @@ exports.signup = async (req, res) => {
                 role: user.role
             }
         });
+
         console.log('=== Signup Process Completed Successfully ===');
     } catch (error) {
         console.error('Signup Error:', error);
@@ -113,9 +116,11 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { username, password } = req.body;
+console.log(req.body);
 
+        // Validate input
         if (!username || !password) {
-            return res.status(400).json({ message: 'נדרשים שם משתמש וסיסמה' });
+            return res.status(400).json({ message: 'נדרשים שם משתמש סיסמה' }); // "Username and password are required"
         }
 
         const user = await User.findOne({
@@ -126,18 +131,18 @@ exports.login = async (req, res) => {
         }).select('+password');
 
         if (!user) {
-            return res.status(401).json({ message: 'פרטי התחברות שגויים' });
+            return res.status(401).json({ message: 'פרטי התחברות שגויים' }); // "Invalid login credentials"
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(401).json({ message: 'פרטי התחברות שגויים' });
+            return res.status(401).json({ message: 'פרטי התחברות שגויים' }); // "Invalid login credentials"
         }
 
         const token = generateToken(user);
 
         res.json({
-            message: 'התחברת בהצלחה',
+            message: 'התחברת בהצלחה', // "Logged in successfully"
             token,
             user: {
                 id: user._id,
@@ -148,8 +153,8 @@ exports.login = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('שגיאה בתהליך ההתחברות:', error);
-        res.status(500).json({ message: 'שגיאה בתהליך ההתחברות' });
+        console.error('שגיאה בתהליך ההתחברות:', error); // "Error during login process"
+        res.status(500).json({ message: 'שגיאה בתהליך ההתחברות' }); // "Error during login process"
     }
 };
 

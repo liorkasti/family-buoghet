@@ -8,6 +8,7 @@ exports.getDashboardData = async (req, res) => {
     try {
         const userId = req.params.userId;
         const user = await User.findById(userId);
+        console.log("xxx", {user});
         
         if (!user) {
             return res.status(404).json({ message: 'משתמש לא נמצא' });
@@ -59,4 +60,39 @@ exports.getDashboardData = async (req, res) => {
     }
 };
 
-// המשך הפונקציות הקיימות...
+// Create a new dashboard entry
+exports.createDashboard = async (req, res) => {
+    try {
+        const newDashboard = new Dashboard(req.body);
+        const savedDashboard = await newDashboard.save();
+        res.status(201).json(savedDashboard);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Get all dashboard entries
+exports.getDashboards = async (req, res) => {
+    try {
+        const dashboards = await Dashboard.find();
+        res.status(200).json(dashboards);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Additional methods can be added here (e.g., update, delete)
+
+exports.getDashboardData = async (req, res) => {
+    const userId = req.params.userId;
+    console.log("xxx", req.params);
+    try {
+        const dashboardData = await Dashboard.findOne({ userId: userId });
+        if (!dashboardData) {
+            return res.status(404).json({ message: 'Dashboard data not found' });
+        }
+        res.status(200).json(dashboardData);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

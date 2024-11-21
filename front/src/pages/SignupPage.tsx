@@ -51,6 +51,8 @@ const SignupPage: React.FC = () => {
       localStorage.setItem('username', response.data.user.username);
       localStorage.setItem('userRole', response.data.user.role);
 
+      console.log(formData);
+
       navigate('/dashboard');
     } catch (err: any) {
       console.error('Registration error:', err);
@@ -67,7 +69,6 @@ const SignupPage: React.FC = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
-    console.log(formData);
   };
 
   const validateForm = (): boolean => {

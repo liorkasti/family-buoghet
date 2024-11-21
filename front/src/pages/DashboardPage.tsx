@@ -15,6 +15,7 @@ import {
 } from 'recharts';
 import '../styles/DashboardPage.css';
 import { log } from 'console';
+import axiosInstance from '../api/axiosInstance';
 
 interface DashboardData {
   totalBudget: number;
@@ -87,14 +88,15 @@ const DashboardPage: React.FC = () => {
         setLoading(true);
         setError(null);
 
-        const dashboardResponse = await axios.get(
-          `http://localhost:5004/api/dashboard/getDashboardData/${userId}`,
+        const dashboardResponse = await axiosInstance.get(
+          `/api/dashboard/getDashboardData/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
+        console.log('dashboardResponse: ', dashboardResponse);
 
         setDashboardData(dashboardResponse.data);
       } catch (err) {
@@ -107,6 +109,7 @@ const DashboardPage: React.FC = () => {
         setLoading(false);
       }
     };
+    console.log({ userData });
 
     fetchData();
   }, [navigate]);
